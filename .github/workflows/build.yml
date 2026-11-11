@@ -16,7 +16,6 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
-          cache: 'gradle'
 
       - name: Create Android Project Structure
         run: |
@@ -37,9 +36,7 @@ jobs:
               <uses-permission android:name="android.permission.INTERNET" />
               <application
                   android:allowBackup="true"
-                  android:icon="@mipmap/ic_launcher"
                   android:label="Mon Application"
-                  android:roundIcon="@mipmap/ic_launcher_round"
                   android:supportsRtl="true"
                   android:theme="@style/Theme.AppCompat.NoActionBar">
                   <activity
@@ -76,7 +73,7 @@ jobs:
           }
           EOF
 
-          # Configuration build.gradle (Module)
+          # Configuration build.gradle (Module app)
           cat << 'EOF' > app/build.gradle
           plugins {
               id 'com.android.application'
@@ -90,11 +87,6 @@ jobs:
                   targetSdk 34
                   versionCode 1
                   versionName "1.0"
-              }
-              buildTypes {
-                  release {
-                      minifyEnabled false
-                  }
               }
           }
           dependencies {
@@ -119,6 +111,26 @@ jobs:
                   mavenCentral()
               }
           }
+          EOF
+
+          # Configuration settings.gradle
+          cat << 'EOF' > settings.gradle
+          pluginManagement {
+              repositories {
+                  google()
+                  mavenCentral()
+                  gradlePluginPortal()
+              }
+          }
+          dependencyResolutionManagement {
+              repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+              repositories {
+                  google()
+                  mavenCentral()
+              }
+          }
+          rootProject.name = "MonApplication"
+          include ':app'
           EOF
 
           echo "gradle.version=8.1.4" > gradle.properties
