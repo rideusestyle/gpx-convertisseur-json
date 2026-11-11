@@ -1,0 +1,25 @@
+name: Convert HTML to APK
+
+on:
+  push:
+    branches: [ main, master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Utiliser l'action de conversion HTML vers APK
+        uses: darkshredder/web-to-app-action@v1
+        with:
+      # Chemin de votre dossier contenant le fichier index.html (la racine ici)
+          build-folder-path: '.' 
+          app-name: 'MonApplication'
+
+      - name: Télécharger l'artefact APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: mon-application-apk
+          path: apk/
