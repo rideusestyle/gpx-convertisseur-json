@@ -94,26 +94,12 @@ jobs:
           }
           EOF
 
-          # Configuration build.gradle (Projet global)
+          # Configuration build.gradle (Projet global vide pour éviter les conflits)
           cat << 'EOF' > build.gradle
-          buildscript {
-              repositories {
-                  google()
-                  mavenCentral()
-              }
-              dependencies {
-                  classpath 'com.android.tools.build:gradle:8.1.4'
-              }
-          }
-          allprojects {
-              repositories {
-                  google()
-                  mavenCentral()
-              }
-          }
+          // Fichier global vide - les dépôts sont gérés dans settings.gradle
           EOF
 
-          # Configuration settings.gradle
+          # Configuration settings.gradle avec les dépôts centralisés
           cat << 'EOF' > settings.gradle
           pluginManagement {
               repositories {
@@ -123,7 +109,7 @@ jobs:
               }
           }
           dependencyResolutionManagement {
-              repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+              repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
               repositories {
                   google()
                   mavenCentral()
