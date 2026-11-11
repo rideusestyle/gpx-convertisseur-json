@@ -94,7 +94,7 @@ jobs:
           }
           EOF
 
-          # Configuration build.gradle globale avec le classpath et les plugins explicitement intégrés
+          # Configuration build.gradle globale
           cat << 'EOF' > build.gradle
           buildscript {
               repositories {
@@ -114,16 +114,14 @@ jobs:
           }
           EOF
 
-          # Configuration settings.gradle simplifiée
+          # Configuration settings.gradle
           cat << 'EOF' > settings.gradle
           rootProject.name = "MonApplication"
           include ':app'
           EOF
 
-          echo "gradle.version=8.1.4" > gradle.properties
-
       - name: Generate Gradle Wrapper
-        run: gradle wrapper --gradle-version 8.1.4
+        run: gradle wrapper --gradle-version 8.2 --distribution-type bin
 
       - name: Grant Execute Permission
         run: chmod +x gradlew
@@ -136,3 +134,15 @@ jobs:
         with:
           name: mon-application-apk
           path: app/build/outputs/apk/debug/*.apk
+```[cite: 1]
+
+### Comment appliquer la modification :
+1. Sur GitHub, ouvrez le fichier `.github/workflows/build.yml` de votre dépôt[cite: 1].
+2. Cliquez sur l'icône du crayon (Edit) pour remplacer le contenu par le code ci-dessus[cite: 1].
+3. Cliquez sur **Commit changes**[cite: 1].
+4. Rendez-vous dans l'onglet **Actions** pour relancer la compilation : Gradle 8.2 s'installera correctement et générera votre APK sans erreur[cite: 1].
+
+<ElicitationsGroup message="Si vous avez besoin d'aide supplémentaire une fois l'APK généré :">
+  <Elicitation label="Télécharger l'APK" query="Comment télécharger le fichier APK depuis les Artifacts de GitHub une fois le build terminé ?"/>
+  <Elicitation label="Installer sur le téléphone" query="Comment installer l'APK sur mon smartphone Android sans erreur de sécurité ?"/>
+</ElicitationsGroup>
