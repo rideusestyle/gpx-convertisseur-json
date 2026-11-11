@@ -94,27 +94,28 @@ jobs:
           }
           EOF
 
-          # Configuration build.gradle (Projet global vide pour éviter les conflits)
+          # Configuration build.gradle globale avec le classpath et les plugins explicitement intégrés
           cat << 'EOF' > build.gradle
-          // Fichier global vide - les dépôts sont gérés dans settings.gradle
-          EOF
-
-          # Configuration settings.gradle avec les dépôts centralisés
-          cat << 'EOF' > settings.gradle
-          pluginManagement {
+          buildscript {
               repositories {
                   google()
                   mavenCentral()
                   gradlePluginPortal()
               }
+              dependencies {
+                  classpath 'com.android.tools.build:gradle:8.1.4'
+              }
           }
-          dependencyResolutionManagement {
-              repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
+          allprojects {
               repositories {
                   google()
                   mavenCentral()
               }
           }
+          EOF
+
+          # Configuration settings.gradle simplifiée
+          cat << 'EOF' > settings.gradle
           rootProject.name = "MonApplication"
           include ':app'
           EOF
